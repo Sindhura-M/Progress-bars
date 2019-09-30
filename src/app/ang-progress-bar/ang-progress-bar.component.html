@@ -1,0 +1,15 @@
+<h1>{{title}}</h1>
+<div class="container">
+	<div class="first" *ngFor="let bar of dataSource.bars; let i = index">
+		 <div class="second" [attr.data-index]="i" [attr.aria-valuenow]="bar +'%'" aria-valuemin="0" [attr.aria-valuemax]="dataSource.limit +'%'" [ngStyle]="{'width': bar + '%'}" [ngClass]="{'my-class': width>'dataSource.limit'}">
+			{{bar}}%
+		</div>
+	</div>
+	<select name="barSelect" class="select" #barSelect>
+		<option>Selct bar</option>
+        <option *ngFor="let bar of dataSource.bars; let i = index" [attr.data-index]="i" [value]="i">Progres bar {{i+1}}</option>
+    </select>
+	<div *ngFor="let button of dataSource.buttons" class="button">
+		<button (click)="btnClick(e, button)" class="button-small"> {{button}} </button>
+	</div>
+</div>
