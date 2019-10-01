@@ -9,39 +9,35 @@ import { ProgressBarModel } from '../progress-bar-model';
 })
 export class AngProgressBarComponent implements OnInit, AfterViewInit {
 
-  	constructor( private progressBarData: ProgressBarDataService) { }
+    constructor( private progressBarData: ProgressBarDataService) { }
 
-    title: String = 'Angular progress bar';
+    title: String = 'Angular progress bars demo';
     dataSource: ProgressBarModel[];
     bars: number[];
+    selectedBar: number = 1;
 
- 	ngOnInit() {
-
+  ngOnInit() {
     this.progressBarData.getprogressBarData().subscribe( data => {
       this.dataSource=data;
-      //this.bars = data.bars;
+      this.bars = data.bars;
     });
   }
 
   @ViewChild('barSelect') barSelect: ElementRef;
 
     ngAfterViewInit() {
-        console.log(this.barSelect.nativeElement.value);
         return this.barSelect.nativeElement.value;
     }
 
-  selectedBar: any;
-
-  btnClick(e, buttonValue: any) {
+  btnClick(buttonValue: any) {
     this.selectedBar = this.ngAfterViewInit();
-    console.log(this.selectedBar + 'this.selectedBar');
-
     let progress = this.dataSource.bars[this.selectedBar] + buttonValue;
 
     if (progress > 0) {
-      this.barData.bars[this.selectedBar] = progress/10;
+      this.dataSource.bars[this.selectedBar] = progress;
     } else {
-      this.barData.bars[this.selectedBar] = 0;
+      this.dataSource.bars[this.selectedBar] = 0;
     }
   }
 }
+
