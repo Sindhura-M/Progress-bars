@@ -13,17 +13,15 @@ export class AngProgressBarComponent implements OnInit, AfterViewInit {
 
     title: String = 'Angular progress bars demo';
     dataSource: ProgressBarModel[];
-    bars: number[];
     selectedBar: number = 1;
 
   ngOnInit() {
     this.progressBarData.getprogressBarData().subscribe( data => {
       this.dataSource=data;
-      this.bars = data.bars;
     });
   }
 
-  @ViewChild('barSelect') barSelect: ElementRef;
+  @ViewChild('barSelect', {static: false}) barSelect: ElementRef;
 
     ngAfterViewInit() {
         return this.barSelect.nativeElement.value;
@@ -35,6 +33,7 @@ export class AngProgressBarComponent implements OnInit, AfterViewInit {
 
     if (progress > 0) {
       this.dataSource.bars[this.selectedBar] = progress;
+      let x = this.dataSource.limit;
     } else {
       this.dataSource.bars[this.selectedBar] = 0;
     }

@@ -1,5 +1,5 @@
 export interface ProgressBarModel {
-	buttons: number[],
 	bars: number[],
+	buttons: number[],
   	limit: number
 }
