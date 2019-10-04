@@ -14,26 +14,16 @@ export class ProgressBarDataService {
 	constructor( private client: HttpClient ) { }
 
   	private _url: string = 'http://pb-api.herokuapp.com/bars';
-  	//'http://localhost:9090/api/ctc/myaccount/accountProfile';
 
- 	 getprogressBarData(): Observable<ProgressBarModel[]> {
+ 	 getprogressBarData(): Observable<ProgressBarModel> {
 
-  		return this.client.get<ProgressBarModel[]>(this._url)
+  		return this.client.get<ProgressBarModel>(this._url)
   		.pipe(
 	       catchError(this.handleError)
 	     );
   	}
 
   	handleError(error) {
-	   	let errorMessage = '';
-		if (error.error instanceof ErrorEvent) {
-		    // client-side error
-		    errorMessage = `Error: ${error.error.message}`;
-		} else {
-		    // server-side error
-		    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-		}
-		   window.alert(errorMessage);
-		   return throwError(errorMessage);
-		}
+		  return throwError(error);
+	}
 }

@@ -1,13 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { TestBed, async } from '@angular/core/testing';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpClientModule } from '@angular/common/http';
 import 'rxjs/add/observable/of';
 import { catchError } from 'rxjs/operators/catchError';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ProgressBarModel } from './progress-bar-model';
 import { ProgressBarDataService } from './progress-bar-data.service';
 
 describe('ProgressBarDataService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(async(() => TestBed.configureTestingModule({})));
 
   const mockdataSource = {
 		limit: 180,
@@ -18,17 +18,10 @@ describe('ProgressBarDataService', () => {
 	const bars = jasmine.createSpyObj('bars', ['getprogressBarData']);
 	const getprogressBarDataSpy = bars.getprogressBarData.and.returnValue( of(mockdataSource) );
 
-	beforeEach(() => TestBed.configureTestingModule({
-		imports: [
-			HttpClientModule
-		],
-		providers: [
-			{
-				provide: ProgressBarDataService,
-				useValue: bars
-			}
-		]
-	}));
+	beforeEach(async(() => TestBed.configureTestingModule({
+		imports: [ HttpClientModule ],
+		providers: [{ provide: ProgressBarDataService,useValue: bars }]
+	})));
 
   it('should be created', () => {
     const service: ProgressBarDataService = TestBed.get(ProgressBarDataService);
@@ -37,10 +30,11 @@ describe('ProgressBarDataService', () => {
 
   it('should return bars data', async(() => {
 		const service: ProgressBarDataService = TestBed.get(ProgressBarDataService);
-		service.getprogressBarData().subscribe((data: ProgressBarModel) => {
-			expect(data.limit).toBe(180);
-			expect(data.buttons.length).toBe(4);
-			expect(data.bars.length).toBe(4);
+		service.getprogressBarData().subscribe( (pBarData: ProgressBarModel) => {
+			console.log('pBarData' + pBarData);
+			expect(pBarData.limit).toBe(180);
+			expect(pBarData.buttons.length).toBe(4);
+			expect(pBarData.bars.length).toBe(4);
 		});
 	}));
 

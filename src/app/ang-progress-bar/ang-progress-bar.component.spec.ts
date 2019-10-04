@@ -1,9 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import 'rxjs/add/observable/of';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
+
 import { AngProgressBarComponent } from './ang-progress-bar.component';
 import { ProgressBarDataService } from '../progress-bar-data.service';
 import { ProgressBarModel } from '../progress-bar-model';
@@ -14,14 +16,11 @@ describe('AngProgressBarComponent', () => {
 
   beforeEach(async(() => {
 
-    const mockdataSource = {
-      limit: 180, buttons: [13, 33, -25, -56], bars: [57, 72, 56, 19]
-    };
-
     const progressBarDataService = jasmine.createSpyObj('progressBarDataService', ['getprogressBarData']);
-    const getProgressBarSpy = progressBarDataService.getprogressBarData.and.returnValue( of(mockdataSource) );
+    const getProgressBarSpy = progressBarDataService.getprogressBarData.and.returnValue(throwError('Error in fetching data'));
 
     TestBed.configureTestingModule({
+      imports: [ HttpClientModule, FormsModule ],
       declarations: [ AngProgressBarComponent ],
       providers:    [ {provide: ProgressBarDataService, useValue: progressBarDataService } ]
     })
@@ -38,12 +37,12 @@ describe('AngProgressBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show error - No data returned from end point', async(() => {
+  it('should show error - Error in fetching data', async(() => {
 
     fixture.whenStable().then(() => {
       const compiled = fixture.nativeElement;
-      expect(component.error).toBe('No data returned from end point');
-      expect(compiled.querySelector('#error').textContent).toContain('No data returned from end point');
+      //expect(component.error).toBe('Error in fetching data');
+      expect(compiled.querySelector('#error').textContent).toContain('Error in fetching data');
     });
   }));
 
@@ -63,6 +62,7 @@ describe('AngProgressBarComponent', () => {
     const getProgressBarSpy = progressBarDataService.getprogressBarData.and.returnValue( of(mockdataSource) );
 
     TestBed.configureTestingModule({
+      imports: [ HttpClientModule, FormsModule ],
       declarations: [ AngProgressBarComponent ],
       providers:    [ {provide: ProgressBarDataService, useValue: progressBarDataService } ]
     })
@@ -80,6 +80,8 @@ describe('AngProgressBarComponent', () => {
   });
 
   it('should render title in h1 tag', async(() => {
+    const fixture = TestBed.createComponent(AngProgressBarComponent);
+    fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('Angular progress bars demo');
   }));
@@ -99,7 +101,7 @@ describe('AngProgressBarComponent', () => {
     //const fixture = TestBed.createComponent(BarsComponent);
     //const app = fixture.debugElement.componentInstance;
 
-    component.selectedBar = '1';
+    component.selectedBar = 1;
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       const compiled = fixture.nativeElement;
@@ -123,7 +125,7 @@ describe('AngProgressBarComponent', () => {
     //const fixture = TestBed.createComponent(BarsComponent);
     //const app = fixture.debugElement.componentInstance;
 
-    component.selectedBar = '2';
+    component.selectedBar = 2;
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       const compiled = fixture.nativeElement;
@@ -147,7 +149,7 @@ describe('AngProgressBarComponent', () => {
     //const fixture = TestBed.createComponent(BarsComponent);
     //const app = fixture.debugElement.componentInstance;
 
-    component.selectedBar = '4';
+    component.selectedBar = 4;
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       const compiled = fixture.nativeElement;
@@ -171,7 +173,7 @@ describe('AngProgressBarComponent', () => {
     //const fixture = TestBed.createComponent(BarsComponent);
     //const app = fixture.debugElement.componentInstance;
 
-    component.selectedBar = '2';
+    component.selectedBar = 2;
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       const compiled = fixture.nativeElement;

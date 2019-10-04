@@ -12,12 +12,18 @@ export class AngProgressBarComponent implements OnInit, AfterViewInit {
     constructor( private progressBarData: ProgressBarDataService) { }
 
     title: String = 'Angular progress bars demo';
-    dataSource: ProgressBarModel[];
+    dataSource: ProgressBarModel;
     selectedBar: number = 1;
+    bars: number[];
+    error: String[];
 
   ngOnInit() {
-    this.progressBarData.getprogressBarData().subscribe( data => {
+    this.progressBarData.getprogressBarData().subscribe( (data: ProgressBarModel) => {
       this.dataSource=data;
+      this.bars=data.bars;
+    },
+      error => {
+        this.error = error;
     });
   }
 
@@ -29,13 +35,12 @@ export class AngProgressBarComponent implements OnInit, AfterViewInit {
 
   btnClick(buttonValue: any) {
     this.selectedBar = this.ngAfterViewInit();
-    let progress = this.dataSource.bars[this.selectedBar] + buttonValue;
+    let progress = this.bars[this.selectedBar] + buttonValue;
 
     if (progress > 0) {
-      this.dataSource.bars[this.selectedBar] = progress;
-      let x = this.dataSource.limit;
+      this.bars[this.selectedBar] = progress;
     } else {
-      this.dataSource.bars[this.selectedBar] = 0;
+      this.bars[this.selectedBar] = 0;
     }
   }
 }
