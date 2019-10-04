@@ -2,13 +2,13 @@
 	<h1>{{title}}</h1>
 	<div>
 		<div class="first" *ngFor="let bar of dataSource?.bars; let i = index">
-			 <div class="second" [attr.data-index]="i" [attr.aria-valuenow]="bar +'%'" aria-valuemin="0" [attr.aria-valuemax]="dataSource.limit +'%'" [ngStyle]="{'width':((bar*100)/dataSource.limit)+ '%'}" [ngClass]="{'barOverflow': bar>dataSource.limit}" id="progressBar{{i+1}}">
+			 <div class="second" [attr.data-index]="i" [attr.aria-valuenow]="bar" aria-valuemin="0" [attr.aria-valuemax]="dataSource.limit" [ngStyle]="{'width':((bar*100)/dataSource.limit)+ '%'}" [ngClass]="{'barOverflow': bar>dataSource.limit}" id="progressBar{{i+1}}">
 				{{bar}}%
 			</div>
 		</div>
 		<div>
 
-		<select class="select" [ngModel]="dataSource?.barSelect" #barSelect placeholder="country">
+		<select class="select" [ngModel]="barSelect" #barSelect placeholder="country">
 	        <option *ngFor="let bar of bars; let i = index" [attr.data-index]="i" [value]="i">Progress bar {{i+1}}</option>
 	    </select>
 		<button *ngFor="let button of dataSource?.buttons" (click)="btnClick(button)" class="button-small button" id="{{button}}"> {{button}} 

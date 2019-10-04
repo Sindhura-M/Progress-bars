@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import 'rxjs/add/observable/of';
@@ -22,7 +22,8 @@ describe('AngProgressBarComponent', () => {
     TestBed.configureTestingModule({
       imports: [ HttpClientModule, FormsModule ],
       declarations: [ AngProgressBarComponent ],
-      providers:    [ {provide: ProgressBarDataService, useValue: progressBarDataService } ]
+      providers:    [ {provide: ProgressBarDataService, useValue: progressBarDataService } ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   }));
@@ -64,7 +65,8 @@ describe('AngProgressBarComponent', () => {
     TestBed.configureTestingModule({
       imports: [ HttpClientModule, FormsModule ],
       declarations: [ AngProgressBarComponent ],
-      providers:    [ {provide: ProgressBarDataService, useValue: progressBarDataService } ]
+      providers:    [ {provide: ProgressBarDataService, useValue: progressBarDataService } ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     })
     .compileComponents();
   }));
@@ -109,14 +111,14 @@ describe('AngProgressBarComponent', () => {
       const bar = compiled.querySelector('div.container .second #progressBar1');
       const button = compiled.querySelectorAll('div.container .button');
 
-      expect(compiled.querySelector('div.container select').value).toEqual('Progress Bar1');
-      expect(bar.getAttribute('aria-valueNow')).toEqual('57');
+      expect(compiled.querySelector('div.container select option').value).toEqual(0);
+      expect(bar.getAttribute('aria-valuenow')).toEqual('57');
       expect(button[1].getAttribute('id')).toEqual('13');
 
       button[1].click();
       fixture.detectChanges();
 
-      expect(compiled.querySelector('div.container .second #progressBar1').getAttribute('aria-valueNow')).toEqual('70');
+      expect(compiled.querySelector('div.container .second #progressBar1').getAttribute('aria-valuenow')).toEqual('70');
       expect(bar.classList.contains('barOverflow')).toBe(false);
     });
   }));
@@ -133,14 +135,14 @@ describe('AngProgressBarComponent', () => {
       const bar = compiled.querySelector('div.container .second #progressBar2');
       const button = compiled.querySelectorAll('div.container .button');
 
-      expect(compiled.querySelector('div.container select').value).toEqual('Progress Bar2');
-      expect(bar.getAttribute('aria-valueNow')).toEqual('72');
+      expect(compiled.querySelector('div.container select option').value).toEqual(1);
+      expect(bar.getAttribute('aria-valuenow')).toEqual('72');
       expect(button[3].getAttribute('id')).toEqual('-25');
 
       button[3].click();
       fixture.detectChanges();
 
-      expect(compiled.querySelector('div.container .second #progressBar2').getAttribute('aria-valueNow')).toEqual('47');
+      expect(compiled.querySelector('div.container .second #progressBar2').getAttribute('aria-valuenow')).toEqual('47');
       expect(bar.classList.contains('barOverflow')).toBe(false);
     });
   }));
@@ -157,14 +159,14 @@ describe('AngProgressBarComponent', () => {
       const bar = compiled.querySelector('div.container .second #progressBar4');
       const button = compiled.querySelectorAll('div.container .button');
 
-      expect(compiled.querySelector('div.container select').value).toEqual('Progress Bar4');
-      expect(bar.getAttribute('aria-valueNow')).toEqual('19');
+      expect(compiled.querySelector('div.container select option').value).toEqual(3);
+      expect(bar.getAttribute('aria-valuenow')).toEqual('19');
       expect(button[4].getAttribute('id')).toEqual('-56');
 
       button[4].click();
       fixture.detectChanges();
 
-      expect(compiled.querySelector('div.container .second #progressBar4').getAttribute('aria-valueNow')).toEqual('0');
+      expect(compiled.querySelector('div.container .second #progressBar4').getAttribute('aria-valuenow')).toEqual('0');
       expect(bar.classList.contains('barOverflow')).toBe(false);
     });
   }));
@@ -181,14 +183,14 @@ describe('AngProgressBarComponent', () => {
       const bar = compiled.querySelector('div.container .second #progressBar2');
       const button = compiled.querySelectorAll('div.container .button');
 
-      expect(compiled.querySelector('div.container select').value).toEqual('Progress Bar2');
-      expect(bar.getAttribute('aria-valueNow')).toEqual('72');
+      expect(compiled.querySelector('div.container select option').value).toEqual(1);
+      expect(bar.getAttribute('aria-valuenow')).toEqual('72');
       expect(button[2].getAttribute('id')).toEqual('33');
 
       button[2].click();
       fixture.detectChanges();
 
-      expect(compiled.querySelector('div.container .second #progressBar2').getAttribute('aria-valueNow')).toEqual('0');
+      expect(compiled.querySelector('div.container .second #progressBar2').getAttribute('aria-valuenow')).toEqual('0');
       expect(bar.classList.contains('barOverflow')).toBe(true);
     });
   }));
