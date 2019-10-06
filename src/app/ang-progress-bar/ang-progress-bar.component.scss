@@ -23,6 +23,16 @@
 }
 
 select, button {
-	margin: 1rem;
-	padding: 0.3rem;
+	margin-left: 1.25rem;
+	padding: 0.2rem;
+}
+@media screen and (min-width: 40rem) {
+	select, button {
+		margin: 1rem;
+		padding: 0.2rem;
+	}
+}
+h1 {
+	padding-left: 20px;
+	text-align: center;
 }

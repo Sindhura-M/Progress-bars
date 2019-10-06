@@ -15,14 +15,15 @@ export class ProgressBarDataService {
 
   	private _url: string = 'http://pb-api.herokuapp.com/bars';
 
+	//Returns data from end point 
  	 getprogressBarData(): Observable<ProgressBarModel> {
-
   		return this.client.get<ProgressBarModel>(this._url)
   		.pipe(
 	       catchError(this.handleError)
 	     );
   	}
 
+	//To handle service call error 
   	handleError(error) {
 		  return throwError(error);
 	}

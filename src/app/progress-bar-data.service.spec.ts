@@ -6,13 +6,13 @@ import { of, throwError } from 'rxjs';
 import { ProgressBarModel } from './progress-bar-model';
 import { ProgressBarDataService } from './progress-bar-data.service';
 
+
+//Test case for service call 
 describe('ProgressBarDataService', () => {
   beforeEach(async(() => TestBed.configureTestingModule({})));
 
   const mockdataSource = {
-		limit: 180,
-		buttons: [13, 33, -25, -56],
-		bars: [57, 72, 56, 19]
+		limit: 130, buttons: [13, 43, -25, -56], bars: [57, 72, 89, 19]
 	};
 
 	const bars = jasmine.createSpyObj('bars', ['getprogressBarData']);
@@ -32,7 +32,7 @@ describe('ProgressBarDataService', () => {
 		const service: ProgressBarDataService = TestBed.get(ProgressBarDataService);
 		service.getprogressBarData().subscribe( (pBarData: ProgressBarModel) => {
 			console.log('pBarData' + pBarData);
-			expect(pBarData.limit).toBe(180);
+			expect(pBarData.limit).toBe(130);
 			expect(pBarData.buttons.length).toBe(4);
 			expect(pBarData.bars.length).toBe(4);
 		});

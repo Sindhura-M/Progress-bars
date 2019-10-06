@@ -10,6 +10,9 @@ import { AngProgressBarComponent } from './ang-progress-bar.component';
 import { ProgressBarDataService } from '../progress-bar-data.service';
 import { ProgressBarModel } from '../progress-bar-model';
 
+//Test case scenarios for progress bar component
+
+//Test for component fail to load data scenario
 describe('AngProgressBarComponent', () => {
   let component: AngProgressBarComponent;
   let fixture: ComponentFixture<AngProgressBarComponent>;
@@ -40,23 +43,30 @@ describe('AngProgressBarComponent', () => {
 
   it('should show error - Error in fetching data', async(() => {
 
-    fixture.whenStable().then(() => {
-      const compiled = fixture.nativeElement;
-      //expect(component.error).toBe('Error in fetching data');
-      expect(compiled.querySelector('#error').textContent).toContain('Error in fetching data');
-    });
+    const fixture = TestBed.createComponent(AngProgressBarComponent);
+	const compiled = fixture.nativeElement;
+
+	fixture.detectChanges();
+	fixture.whenStable().then(() => {
+		expect(fixture.debugElement.componentInstance.error).toBe('Error in fetching data');
+		expect(compiled.querySelector('.error span').textContent).toContain('Error in fetching data');
+	});
   }));
 
 });
 
+
+//To test component created and functioning scenario
 describe('AngProgressBarComponent', () => {
   let component: AngProgressBarComponent;
   let fixture: ComponentFixture<AngProgressBarComponent>;
 
+  
+  //creates mock data 
   beforeEach(async(() => {
 
     const mockdataSource = {
-      limit: 180, buttons: [13, 33, -25, -56], bars: [57, 72, 56, 19]
+      limit: 130, buttons: [13, 43, -25, -56], bars: [57, 72, 89, 19]
     };
 
     const progressBarDataService = jasmine.createSpyObj('progressBarDataService', ['getprogressBarData']);
@@ -71,6 +81,8 @@ describe('AngProgressBarComponent', () => {
     .compileComponents();
   }));
 
+  
+  //Emulates the component 
   beforeEach(() => {
     fixture = TestBed.createComponent(AngProgressBarComponent);
     component = fixture.componentInstance;
@@ -89,6 +101,9 @@ describe('AngProgressBarComponent', () => {
   }));
 
   it('should render 4 progress bars and 5 controls', async(() => {
+	  const fixture = TestBed.createComponent(AngProgressBarComponent);
+
+	  fixture.detectChanges();
     fixture.whenStable().then(() => {
       const compiled = fixture.nativeElement;
 
@@ -100,99 +115,96 @@ describe('AngProgressBarComponent', () => {
   }));
 
   it('should change progressbar 1 with value 57 to 70 when button(13) is clicked', async(() => {
-    //const fixture = TestBed.createComponent(BarsComponent);
-    //const app = fixture.debugElement.componentInstance;
+    const fixture = TestBed.createComponent(AngProgressBarComponent);
 
-    component.selectedBar = 1;
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      const compiled = fixture.nativeElement;
+		fixture.debugElement.componentInstance.selectedBar = '0';
+		fixture.detectChanges();
+		fixture.whenStable().then(() => {
+			const compiled = fixture.nativeElement;
+			const button = compiled.querySelectorAll('div.container button');
+			const bar = compiled.querySelectorAll('div.container .second');
+			
+			expect(compiled.querySelector('div.container select').value).toEqual('0');
+			
+			expect(bar[0].getAttribute('aria-valueNow')).toEqual('57');
+			expect(button[0].getAttribute('id')).toEqual('13');
 
-      const bar = compiled.querySelector('div.container .second #progressBar1');
-      const button = compiled.querySelectorAll('div.container .button');
+			button[0].click();
+			fixture.detectChanges();
 
-      expect(compiled.querySelector('div.container select option').value).toEqual(0);
-      expect(bar.getAttribute('aria-valuenow')).toEqual('57');
-      expect(button[1].getAttribute('id')).toEqual('13');
-
-      button[1].click();
-      fixture.detectChanges();
-
-      expect(compiled.querySelector('div.container .second #progressBar1').getAttribute('aria-valuenow')).toEqual('70');
-      expect(bar.classList.contains('barOverflow')).toBe(false);
-    });
+			expect(compiled.querySelector('div.container .bar0').getAttribute('aria-valuenow')).toEqual('70');
+			expect(bar[0].classList.contains('limit-exceeded')).toBe(false);
+		});
   }));
-
+  
   it('should change progressbar 2 with value 72 to 47 when button(-25) is clicked', async(() => {
-    //const fixture = TestBed.createComponent(BarsComponent);
-    //const app = fixture.debugElement.componentInstance;
+    const fixture = TestBed.createComponent(AngProgressBarComponent);
 
-    component.selectedBar = 2;
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      const compiled = fixture.nativeElement;
+		fixture.debugElement.componentInstance.selectedBar = '1';
+		fixture.detectChanges();
+		fixture.whenStable().then(() => {
+			const compiled = fixture.nativeElement;
+			const button = compiled.querySelectorAll('div.container button');
+			const bar = compiled.querySelectorAll('div.container .second');
+			
+			expect(compiled.querySelector('div.container select').value).toEqual('1');
+			
+			expect(bar[1].getAttribute('aria-valueNow')).toEqual('72');
+			expect(button[2].getAttribute('id')).toEqual('-25');
 
-      const bar = compiled.querySelector('div.container .second #progressBar2');
-      const button = compiled.querySelectorAll('div.container .button');
+			button[2].click();
+			fixture.detectChanges();
 
-      expect(compiled.querySelector('div.container select option').value).toEqual(1);
-      expect(bar.getAttribute('aria-valuenow')).toEqual('72');
-      expect(button[3].getAttribute('id')).toEqual('-25');
-
-      button[3].click();
-      fixture.detectChanges();
-
-      expect(compiled.querySelector('div.container .second #progressBar2').getAttribute('aria-valuenow')).toEqual('47');
-      expect(bar.classList.contains('barOverflow')).toBe(false);
-    });
+			expect(compiled.querySelector('div.container .bar1').getAttribute('aria-valuenow')).toEqual('47');
+			expect(bar[1].classList.contains('limit-exceeded')).toBe(false);
+		});
   }));
 
   it('should show progress value 0 when value goes below 0', async(() => {
-    //const fixture = TestBed.createComponent(BarsComponent);
-    //const app = fixture.debugElement.componentInstance;
+    const fixture = TestBed.createComponent(AngProgressBarComponent);
 
-    component.selectedBar = 4;
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      const compiled = fixture.nativeElement;
+		fixture.debugElement.componentInstance.selectedBar = '3';
+		fixture.detectChanges();
+		fixture.whenStable().then(() => {
+			const compiled = fixture.nativeElement;
+			const button = compiled.querySelectorAll('div.container button');
+			const bar = compiled.querySelectorAll('div.container .second');
+			
+			expect(compiled.querySelector('div.container select').value).toEqual('3');
+			
+			expect(bar[3].getAttribute('aria-valueNow')).toEqual('19');
+			expect(button[3].getAttribute('id')).toEqual('-56');
 
-      const bar = compiled.querySelector('div.container .second #progressBar4');
-      const button = compiled.querySelectorAll('div.container .button');
+			button[3].click();
+			fixture.detectChanges();
 
-      expect(compiled.querySelector('div.container select option').value).toEqual(3);
-      expect(bar.getAttribute('aria-valuenow')).toEqual('19');
-      expect(button[4].getAttribute('id')).toEqual('-56');
-
-      button[4].click();
-      fixture.detectChanges();
-
-      expect(compiled.querySelector('div.container .second #progressBar4').getAttribute('aria-valuenow')).toEqual('0');
-      expect(bar.classList.contains('barOverflow')).toBe(false);
-    });
+			expect(compiled.querySelector('div.container .bar3').getAttribute('aria-valuemin')).toEqual('0');
+			expect(bar[3].classList.contains('limit-exceeded')).toBe(false);
+		});
   }));
+  
+  it('should show progressbar color in red when value goes above limit', async(() => {
+    const fixture = TestBed.createComponent(AngProgressBarComponent);
 
-  it('should show progressbar 2 color in red value goes above limit', async(() => {
-    //const fixture = TestBed.createComponent(BarsComponent);
-    //const app = fixture.debugElement.componentInstance;
+		fixture.debugElement.componentInstance.selectedBar = '2';
+		fixture.detectChanges();
+		fixture.whenStable().then(() => {
+			const compiled = fixture.nativeElement;
+			const button = compiled.querySelectorAll('div.container button');
+			const bar = compiled.querySelectorAll('div.container .second');
+			
+			expect(compiled.querySelector('div.container select').value).toEqual('2');
+			
+			expect(bar[2].getAttribute('aria-valueNow')).toEqual('89');
+			expect(button[1].getAttribute('id')).toEqual('43');
 
-    component.selectedBar = 2;
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      const compiled = fixture.nativeElement;
+			button[1].click();
+			fixture.detectChanges();
 
-      const bar = compiled.querySelector('div.container .second #progressBar2');
-      const button = compiled.querySelectorAll('div.container .button');
+			expect(compiled.querySelector('div.container .bar2').getAttribute('aria-valuenow')).toEqual('132');
+			expect(compiled.querySelector('div.container .bar2').classList.contains('barOverflow')).toBe(true);
+		});
+	}));
 
-      expect(compiled.querySelector('div.container select option').value).toEqual(1);
-      expect(bar.getAttribute('aria-valuenow')).toEqual('72');
-      expect(button[2].getAttribute('id')).toEqual('33');
-
-      button[2].click();
-      fixture.detectChanges();
-
-      expect(compiled.querySelector('div.container .second #progressBar2').getAttribute('aria-valuenow')).toEqual('0');
-      expect(bar.classList.contains('barOverflow')).toBe(true);
-    });
-  }));
 });
 
